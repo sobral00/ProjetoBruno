@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <locale.h> //biblioteca para comando setlocale, aceitar caracteres da lingua portuguesa
 #include <string.h>//biblioteca para manipular strings
+#include <ctype.h>
 
 typedef struct filme{ //struct que me diz os atributos dos filmes, o typedef muda o tipo para Tfilme.
 	int id;
@@ -19,7 +20,7 @@ typedef struct cliente{ //struct que me diz os atributos dos clientes, o typedef
 
 Tfilme listaf[50]; //a variavel com vetor da lista dos filmes
 Tcliente listac[50];//a variavel com vetor da lista dos clientes
-char busca[50]; //um variavel criada para localizar os filmes e clientes pelo nome  com o comando strcmp
+char busca[50],c[]={0}; //um variavel criada para localizar os filmes e clientes pelo nome  com o comando strcmp
 int z=0,x,y=0,cont=0,conty=0;//variaveis de seleção de menu, de comandos de repetição e de contadores de filmes e clientes(cont para filmes e conty para clientes)
 
 
@@ -33,13 +34,18 @@ void instrucao(){// função de instruções para um bom uso do programa
 }
 void posicao(){ // função que tanto diz a posição do vetor quanto seleciona o ID do filme, lembrando que tem q começar por 1 q ele bota o vetor para 0
         printf("\nInsira o ID do filme: ");
-        scanf("%d",&x);
+        scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
-    x-=1; //aqui ele tira 1 do ID selecionado para por a posição correta no vetor
+        x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em int.
+        if(x==0 || x<0 || x<=cont){
+           printf("ID inadequado ou em uso!\n");
+           posicao();
+            }
+        x-=1; //aqui ele tira 1 do ID selecionado para por a posição correta no vetor
 }
 void cadastro(){
 	posicao();//chama a função posição
-	if(x>=cont){ // caso o x seja menor q o contador no momento ele vai entender que essa ID esta em uso e nao vai permitir o cadastro
+	 // caso o x seja menor q o contador no momento ele vai entender que essa ID esta em uso e nao vai permitir o cadastro
 	listaf[x].id = x+1; //devolve o 1 tirado para determinar a posição no vetor para o ID
 	printf("Insira o ano do filme: ");
 	scanf("%d",&listaf[x].ano);
@@ -52,10 +58,6 @@ void cadastro(){
 	setbuf(stdin,NULL);
 	cont++;// coloca mais um no contador de filmes
     menu1();// chama a função menu dos filmes
-}else{
-	printf("\nEste ID já está ocupado.\n");// como o x era menor q o contador ele mostra essa mensagem nao permitindo o cadastro no ID ocupado
-    menu1();
-}
 }
 void listar(){ // função que lista os filmes pela ordem do ID cadastrado
     for(x=0;x<cont;x++){//enquanto o x for menor q o contador de filmes ele entende q tem um filme cadastrado e lista
@@ -130,7 +132,6 @@ void visualizar(){// visualiza as informações do filme cadastrado apartir de s
 
 void consulta(){// visualiza as informações do filme cadastrado apartir de seu titulo
     printf("\nInsira o Titulo do filme: ");
-    fflush(stdout);//limpa o buffer do teclado
     setbuf(stdin,NULL);
     fgets(busca,50,stdin);
     for(x=0;x<=50;x++){
@@ -146,6 +147,7 @@ void consulta(){// visualiza as informações do filme cadastrado apartir de seu
 
 void menu1(){ // menu de filmes
 printf("\nLocadora de Filmes strcpy(Nota,Dez)\n");
+printf("Menu de Filmes\n");
     printf("\t[1] Cadastrar\n");
     printf("\t[2] Editar\n");
     printf("\t[3] Listar\n");
@@ -193,8 +195,13 @@ printf("\nLocadora de Filmes strcpy(Nota,Dez)\n");
 */
 void posicao1(){
     printf("\nInsira o id do Cliente: ");
-    scanf("%d",&y);
-    setbuf(stdin,NULL);
+    scanf("%s*%d",&c);
+        setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
+        y= strtol(c,NULL,10);
+        if(y==0 || y<0 || y<=cont){
+           printf("ID inadequado ou em uso!\n");
+           posicao1();
+            }
     y-=1;
 }
 void cadastro1(){
@@ -308,6 +315,7 @@ void consulta1(){
 
 void menu2(){
 printf("\nLocadora de Filmes strcpy(Nota,Dez)\n");
+printf("Menu de Clientes\n");
     printf("\t[1] Cadastrar\n");
     printf("\t[2] Editar\n");
     printf("\t[3] Listar\n");
@@ -379,4 +387,3 @@ int main(){//função principal
 	menu();
 	return 0;
 }
-
