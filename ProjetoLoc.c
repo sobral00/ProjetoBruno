@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <locale.h> //biblioteca para comando setlocale, aceitar caracteres da lingua portuguesa
 #include <string.h>//biblioteca para manipular strings
-#include <ctype.h>
 
 typedef struct filme{ //struct que me diz os atributos dos filmes, o typedef muda o tipo para Tfilme.
 	int id;
