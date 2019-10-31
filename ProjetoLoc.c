@@ -17,28 +17,36 @@ typedef struct cliente{ //struct que me diz os atributos dos clientes, o typedef
 	char email[30];
 }Tcliente;
 
+typedef struct estoque{ //struct que diz os atributos do estoque.
+    int id;
+    int idf;
+    char datae[10];
+}Testoque;
+
+
 Tfilme listaf[50]; //a variavel com vetor da lista dos filmes
 Tcliente listac[50];//a variavel com vetor da lista dos clientes
+Testoque listae[50];// a variavel com o vetor da lista do estoque
 char busca[50],c[]={0}; //um variavel criada para localizar os filmes e clientes pelo nome  com o comando strcmp
 int z=0,x,y=0,cont=0,conty=0;//variaveis de seleção de menu, de comandos de repetição e de contadores de filmes e clientes(cont para filmes e conty para clientes)
 
 
 void instrucao(){// função de instruções para um bom uso do programa
-    printf("\n--------INSTRUÇÕES--------\n");
+    printf("\n--------INSTRUCOES--------\n");
     printf("Insira o id dos filmes e dos clientes apartir do número 1.\n");
-    printf("Para saber a posição atual do id liste os filmes ou clientes.\n");
-    printf("Use apenas os números listados nos menus para escolher o passo a seguir no menu.\n");
-    printf("Ao excluir um filme use a função do editar atualizar para colocar outro no lugar.\n\n");
+    printf("Para saber a posicao atual do id liste os filmes ou clientes.\n");
+    printf("Use apenas os numeros listados nos menus para escolher o passo a seguir no menu.\n");
+    printf("Ao excluir um filme use a funcao do editar atualizar para colocar outro no lugar.\n\n");
     menu();// chama o menu principal quando terminar a função
 }
 void posicao(){ // função que tanto diz a posição do vetor quanto seleciona o ID do filme, lembrando que tem q começar por 1 q ele bota o vetor para 0
         printf("\nInsira o ID do filme: ");
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
-        x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em int.
+        x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
         if(x==0 || x<0 || x<=cont){
            printf("ID inadequado ou em uso!\n");
-           posicao();
+           menu1();
             }
         x-=1; //aqui ele tira 1 do ID selecionado para por a posição correta no vetor
 }
@@ -61,9 +69,12 @@ void cadastro(){
 void listar(){ // função que lista os filmes pela ordem do ID cadastrado
     for(x=0;x<cont;x++){//enquanto o x for menor q o contador de filmes ele entende q tem um filme cadastrado e lista
         if(listaf[x].id!=0){//se o ID for 0 quer dizer q ouve um cadastro mais o filme foi excluido
-            printf("%dº - %s",x+1,listaf[x].titulo);//x+1 para mostrar a posição do ID q sempre vai ser 1 a mais q a posição no vetor
+            printf("Id: %d\n",listaf[x].id);
+            printf("Ano: %d\n",listaf[x].ano);
+            printf("Titulo: %s",listaf[x].titulo);
+            printf("Genero: %s\n",listaf[x].genero);//x+1 para mostrar a posição do ID q sempre vai ser 1 a mais q a posição no vetor
             }else{
-                printf("%dº - %s\n",x+1,listaf[x].titulo);//no caso de filme excluido ele solicitara q um novo filme seja inserido pelo atualizar
+                printf("%s\n",listaf[x].titulo);//no caso de filme excluido ele solicitara q um novo filme seja inserido pelo atualizar
         }
     }
     menu1();
@@ -71,7 +82,15 @@ void listar(){ // função que lista os filmes pela ordem do ID cadastrado
 
 void atualizar(){//função para atualizar tem a mesma função do cadastro mas nao aumenta um no contador
 if(cont>=0){
-	posicao();
+	 printf("\nInsira o ID do filme: ");
+        scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
+        setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
+        x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
+        if(x==0 || x<0 || x<cont){
+           printf("ID inadequado ou em uso!\n");
+           menu1();
+            }
+        x-=1;
 	listaf[x].id = x+1;
 	printf("Insira o ano do filme: ");
 	scanf("%d",&listaf[x].ano);
@@ -85,7 +104,15 @@ if(cont>=0){
 }
 
 void excluir(){//função exclui um filme da lista
-    posicao();
+     printf("\nInsira o ID do filme: ");
+        scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
+        setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
+        x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
+        if(x==0 || x<0 || x<cont){
+           printf("ID inadequado ou em uso!\n");
+           menu1();
+            }
+        x-=1;
     listaf[x].id = x+1;
     listaf[x].ano = 0;
     strcpy(listaf[x].titulo, "Vazio - Atualize o filme");
@@ -113,7 +140,7 @@ void editar(){//função de menu editar
         menu1();
         break;
     default://caso o input não seja nenhum desses casos ele mostrara essa mensagem
-        printf("\nComando inválido, tente novamente!\n\n");
+        printf("\nComando invalido, tente novamente!\n\n");
         setbuf(stdin,NULL);
         editar();
         break;
@@ -121,7 +148,15 @@ void editar(){//função de menu editar
 }
 
 void visualizar(){// visualiza as informações do filme cadastrado apartir de sua posição de ID
-    posicao();
+    printf("\nInsira o ID do filme: ");
+        scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
+        setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
+        x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
+        if(x==0 || x<0 || x<cont){
+           printf("ID inadequado ou em uso!\n");
+           menu1();
+            }
+        x-=1;
     printf("Id: %d\n",listaf[x].id);
     printf("Ano: %d\n",listaf[x].ano);
     printf("Titulo: %s",listaf[x].titulo);
@@ -197,7 +232,7 @@ void posicao1(){
     scanf("%s*%d",&c);
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         y= strtol(c,NULL,10);
-        if(y==0 || y<0 || y<=cont){
+        if(y==0 || y<0 || y<=conty){
            printf("ID inadequado ou em uso!\n");
            posicao1();
             }
@@ -205,7 +240,6 @@ void posicao1(){
 }
 void cadastro1(){
 	posicao1();
-	if(y>=conty){
 	listac[y].id = y+1;
 	printf("Insira o nome do cliente: ");
 	fgets(listac[y].nome,50,stdin);
@@ -217,17 +251,19 @@ void cadastro1(){
 	fgets(listac[y].email,50,stdin);
 	setbuf(stdin,NULL);
 	conty++;
-	menu2();
-	}else{
-	printf("\nEste ID já está ocupado.\n");
-    menu1();}
+    menu2();
 }
 void listar1(){
     for(y=0;y<conty;y++){
         if(listac[y].id!=0){
-            printf("%dº - %s",y+1,listac[y].nome);
+            printf("ID: %d\n",listac[y].id);
+            printf("Nome: %s",listac[y].nome);
+            printf("CPF: %s",listac[y].cpf);
+            fflush(stdout);
+            printf("E-mail: %s\n",listac[y].email);
+            fflush(stdout);
             }else{
-                printf("%dº - %s\n",y+1,listac[y].nome);
+                printf("%s\n",listac[y].nome);
         }
     }
     menu2();
@@ -235,7 +271,15 @@ void listar1(){
 
 void atualizar1(){
     if(conty>=0){
-	posicao1();
+	printf("\nInsira o ID do cliente: ");
+        scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
+        setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
+        y= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
+        if(y==0 || y<0 || conty<y){
+           printf("ID inadequado ou nao cadastrado!\n");
+           menu2();
+            }
+        y-=1;
 	listac[y].id = y+1;
 	printf("Insira o nome do cliente: ");
 	fgets(listac[y].nome,50,stdin);
@@ -251,7 +295,15 @@ void atualizar1(){
 }
 
 void excluir1(){
-    posicao1();
+    printf("\nInsira o ID do cliente: ");
+        scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
+        setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
+        y= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
+        if(y==0 || y<0 || y<conty){
+           printf("ID inadequado ou em uso!\n");
+           menu2();
+            }
+        y-=1;
     listac[y].id = y+1;
     strcpy(listac[y].nome, "Insira um novo Cliente");
     strcpy(listac[y].email, "Vazio");
@@ -279,14 +331,22 @@ void editar1(){
         menu2();
         break;
     default:
-        printf("\nComando inválido, tente novamente!\n\n");
+        printf("\nComando invalido, tente novamente!\n\n");
         editar1();
         break;
     }
 }
 
 void visualizar1(){
-    posicao1();
+    printf("\nInsira o ID do cliente: ");
+        scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
+        setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
+        y= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
+        if(y==0 || y<0 || y<conty){
+           printf("ID inadequado ou em uso!\n");
+           menu2();
+            }
+        y-=1;
     printf("ID: %d\n",listac[y].id);
     printf("Nome: %s",listac[y].nome);
     printf("CPF: %s",listac[y].cpf);
@@ -354,9 +414,9 @@ void menu(){// menu principal que chama os submenus de filmes e clientes
     printf("Locadora de Filmes strcpy(Nota,Dez)\n");
     printf("\t[1] Filmes\n");
     printf("\t[2] Clientes\n");
-    printf("\t[3] Instruções\n");
+    printf("\t[3] Instrucoes\n");
     printf("\t[4] Sair\n");
-    printf("Operação: ");
+    printf("Operacao: ");
     scanf ("%d", &z);
     switch(z){
     case 1:
@@ -382,7 +442,7 @@ void menu(){// menu principal que chama os submenus de filmes e clientes
 
 
 int main(){//função principal
-  setlocale(LC_ALL, "");//comando q coloca os caracteres do idioma portugues no programa
+  setlocale(LC_ALL, "Portuguese");//comando q coloca os caracteres do idioma portugues no programa
 	menu();
 	return 0;
 }
