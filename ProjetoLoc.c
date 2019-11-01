@@ -65,9 +65,9 @@ void cadastroestoque(){
 	menuestoque();
 }
 
-void listarestoque(){ // função que lista os filmes pela ordem do ID cadastrado
-    for(x=0;x<cont;x++){//enquanto o x for menor q o contador de filmes ele entende q tem um filme cadastrado e lista
-        if(listaf[x].id!=0){//se o ID for 0 quer dizer q ouve um cadastro mais o filme foi excluido
+void listarestoque(){ // função que lista os filmes em estoque pela ordem do ID cadastrado
+    for(x=0;x<cont;x++){/
+        if(listaf[x].id!=0){//se o ID não for 0 quer dizer q ouve um cadastro mais o filme foi excluido
             printf("Id: %d\n",listae[x].idf);
             printf("Titulo: %s",listae[x].titulof);
             printf("Entrada: %s",listae[x].dataentrada);
@@ -111,7 +111,7 @@ void excluirestoque(){
     menuestoque();
 }
 
-void editarestoque(){//função de menu editar
+void editarestoque(){//função de menu editar estoque
     printf("\nEditar\n");
     printf("\t[1] Atualizar\n");
     printf("\t[2] Excluir\n");
@@ -156,7 +156,7 @@ void visualizarestoque(){
     menuestoque();
 }
 
-void consultaestoque(){// visualiza as informações do filme cadastrado apartir de seu titulo
+void consultaestoque(){// 
     printf("\nInsira o Titulo do filme: ");
     setbuf(stdin,NULL);
     fgets(busca,50,stdin);
@@ -186,13 +186,13 @@ void cadastro(){
 	posicao();//chama a função posição
 	 // caso o x seja menor q o contador no momento ele vai entender que essa ID esta em uso e nao vai permitir o cadastro
 	listaf[x].id = x+1; //devolve o 1 tirado para determinar a posição no vetor para o ID
-	listae[x].idf = listaf[x].id;
+	listae[x].idf = listaf[x].id; //cadastra o id do filme tambem no estoque
 	printf("Insira o ano do filme: ");
 	scanf("%d",&listaf[x].ano);
 	setbuf(stdin,NULL);
 	printf("Insira o nome do filme: ");
 	fgets(listaf[x].titulo,50,stdin);
-	strcpy(listae[x].titulof,listaf[x].titulo);
+	strcpy(listae[x].titulof,listaf[x].titulo); //cadastra o titulo do filme no id correto no estoque
 	setbuf(stdin,NULL);
 	printf("Insira o genero do filme: ");
 	fgets(listaf[x].genero,50,stdin);
