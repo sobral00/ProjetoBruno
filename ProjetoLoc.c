@@ -20,7 +20,7 @@ typedef struct cliente{ //struct que me diz os atributos dos clientes, o typedef
 typedef struct estoque{ //struct que diz os atributos do estoque.
     int quantidade;
     int idf;
-    char dataentrada[10];
+    char dataentrada[12];
     char titulof[50];
 }Testoque;
 
@@ -28,7 +28,7 @@ typedef struct estoque{ //struct que diz os atributos do estoque.
 Tfilme listaf[50]; //a variavel com vetor da lista dos filmes
 Tcliente listac[50];//a variavel com vetor da lista dos clientes
 Testoque listae[50];// a variavel com o vetor da lista do estoque
-char busca[50],c[]={0}; //um variavel criada para localizar os filmes e clientes pelo nome  com o comando strcmp
+char busca[50],c[]={0}; //um variavel criada para localizar os filmes e clientes pelo nome  com o comando strcmp, variavel para pegar um valor caractere para depois transforma-lo em int.
 int z=0,x,y=0,cont=0,conty=0,conte=0;//variaveis de seleção de menu, de comandos de repetição e de contadores de filmes e clientes(cont para filmes e conty para clientes)
 
 
@@ -55,6 +55,7 @@ void posicaoestoque(){
 
 void cadastroestoque(){
 	posicaoestoque();
+	printf("Filme: %s", listae[x].titulof);
 	printf("Insira a quantidade de filmes: ");
 	scanf("%d",&listae[x].quantidade);
 	setbuf(stdin,NULL);
@@ -66,13 +67,13 @@ void cadastroestoque(){
 }
 
 void listarestoque(){ // função que lista os filmes em estoque pela ordem do ID cadastrado
-    for(x=0;x<cont;x++){/
+    for(x=0;x<cont;x++){
         if(listaf[x].id!=0){//se o ID não for 0 quer dizer q ouve um cadastro mais o filme foi excluido
             printf("Id: %d\n",listae[x].idf);
             printf("Titulo: %s",listae[x].titulof);
             printf("Entrada: %s",listae[x].dataentrada);
             setbuf(stdin,NULL);
-            printf("Quantidade: %d\n",listae[x].quantidade);
+            printf("Quantidade: %d\n\n",listae[x].quantidade);
             setbuf(stdin,NULL);
             }else{
                 printf("%s\n",listae[x].titulof);//no caso de filme excluido ele solicitara q um novo filme seja inserido pelo atualizar
@@ -132,7 +133,7 @@ void editarestoque(){//função de menu editar estoque
     default://caso o input não seja nenhum desses casos ele mostrara essa mensagem
         printf("\nComando invalido, tente novamente!\n\n");
         setbuf(stdin,NULL);
-        editar();
+        editarestoque();
         break;
     }
 }
@@ -156,7 +157,7 @@ void visualizarestoque(){
     menuestoque();
 }
 
-void consultaestoque(){// 
+void consultaestoque(){//
     printf("\nInsira o Titulo do filme: ");
     setbuf(stdin,NULL);
     fgets(busca,50,stdin);
@@ -220,7 +221,7 @@ if(cont>=0){
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
-        if(x==0 || x<0 || x<cont){
+        if(x==0 || x<0){
            printf("ID inadequado ou em uso!\n");
            menu1();
             }
@@ -244,16 +245,16 @@ void excluir(){//função exclui um filme da lista
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
-        if(x==0 || x<0 || x<cont){
+        if(x==0 || x<0){
            printf("ID inadequado!\n");
            menu1();
             }
         x-=1;
     listaf[x].id = x+1;
     listaf[x].ano = 0;
-    strcpy(listaf[x].titulo, "Vazio - Atualize o filme");
+    strcpy(listaf[x].titulo, "Vazio - Atualize o filme\n");
     strcpy(listae[x].titulof,listaf[x].titulo);
-    strcpy(listaf[x].genero, "Vazio");
+    strcpy(listaf[x].genero, "Vazio - Atualize o filme");
     setbuf(stdin,NULL);
     menu1();
 }
@@ -398,9 +399,9 @@ void excluir1(){
             }
         y-=1;
     listac[y].id = y+1;
-    strcpy(listac[y].nome, "Insira um novo Cliente");
-    strcpy(listac[y].email, "Vazio");
-    strcpy(listac[y].cpf, "Vazio");
+    strcpy(listac[y].nome, "Insira um novo Cliente\n");
+    strcpy(listac[y].email, "Vazio\n");
+    strcpy(listac[y].cpf, "Vazio\n");
     setbuf(stdin,NULL);
     menu2();
 }
