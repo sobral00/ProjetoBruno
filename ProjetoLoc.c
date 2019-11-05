@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h> //biblioteca para comando setlocale, aceitar caracteres da lingua portuguesa
 #include <string.h>//biblioteca para manipular strings
 
 typedef struct filme{ //struct que me diz os atributos dos filmes, o typedef muda o tipo para Tfilme.
@@ -24,23 +23,110 @@ typedef struct estoque{ //struct que diz os atributos do estoque.
     char titulof[50];
 }Testoque;
 
+typedef struct aluguel{
+    int ida;
+    char dataaluguel[12];
+    char datadevolucao[12];
+}Taluguel;
 
+Taluguel listaa[50];
+Taluguel listaacliente[50]; // a variavel com o vetor da lista de alugueis e devoluções
 Tfilme listaf[50]; //a variavel com vetor da lista dos filmes
 Tcliente listac[50];//a variavel com vetor da lista dos clientes
 Testoque listae[50];// a variavel com o vetor da lista do estoque
-char busca[50],c[]={0}; //um variavel criada para localizar os filmes e clientes pelo nome  com o comando strcmp, variavel para pegar um valor caractere para depois transforma-lo em int.
-int z=0,x,y=0,cont=0,conty=0,conte=0;//variaveis de seleção de menu, de comandos de repetição e de contadores de filmes e clientes(cont para filmes e conty para clientes)
+char busca[50],c[]={0}, vf; //um variavel criada para localizar os filmes e clientes pelo nome  com o comando strcmp, variavel para pegar um valor caractere para depois transforma-lo em int.
+int z=0,x,y=0,cont=0,conty=0,conte=0,conta=0, contb=0;//variaveis de seleção de menu, de comandos de repetição e de contadores de filmes e clientes(cont para filmes e conty para clientes)
 
 
 void instrucao(){// função de instruções para um bom uso do programa
     printf("\n--------INSTRUCOES--------\n");
-    printf("Insira o id dos filmes e dos clientes apartir do número 1.\n");
+    printf("Insira o id dos filmes e dos clientes apartir do numero 1.\n");
     printf("Para saber a posicao atual do id liste os filmes ou clientes.\n");
     printf("Use apenas os numeros listados nos menus para escolher o passo a seguir no menu.\n");
     printf("Ao excluir um filme use a funcao do editar atualizar para colocar outro no lugar.\n\n");
     menu();// chama o menu principal quando terminar a função
 }
 
+void posicaoaluguel(){
+     printf("\nInsira o ID do Cliente: ");
+        scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
+        setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
+        x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
+        if(x==0 || x<0|| x<conta){
+           printf("ID inadequado!\n");
+           posicaoaluguel();
+            }
+        x-=1;
+}
+void aluguelcliente(){
+    posicaoaluguel();
+     printf("Cliente: %s", listac[x].nome);
+        printf("Esta correto? (s / n)\n");
+        scanf("%c", &vf);
+        if(vf == 'n'){
+            posicaoaluguel();
+        }else if(vf == 's'){
+
+        }else{
+    printf("Digite s ou n\n");
+    aluguelcliente();
+    }
+     printf("\nInsira o Titulo do filme: ");
+    setbuf(stdin,NULL);
+    fgets(busca,50,stdin);
+    for(y=0;y<=50;y++){
+        if(strcmp(busca, listae[y].titulof) == 0){
+            if(listae[y].quantidade>0){
+                listae[y].quantidade--;
+                conta++;
+            }else{
+                printf("Nao temos o filme em estoque.\n");
+                menualuguel();
+                }
+            }
+        }
+    printf("Digite a data de aluguel:");
+    fgets(listaa[x].dataaluguel,12,stdin);
+    printf("Digite a data da devolucao:");
+    fgets(listaa[x].datadevolucao,12,stdin);
+    printf("Filme alugado com sucesso.\n");
+    menualuguel();
+}
+void aluguel(){
+    printf("\nInsira o ID do Aluguel: ");
+        scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
+        setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
+        x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
+        if(x==0 || x<0|| x<contb){
+           printf("ID inadequado!\n");
+           aluguel();
+            }
+        x-=1;
+    printf("\nInsira o Titulo do filme: ");
+    setbuf(stdin,NULL);
+    fgets(busca,50,stdin);
+    for(y=0;y<=50;y++){
+        if(strcmp(busca, listae[y].titulof) == 0){
+            if(listae[y].quantidade>0){
+                listae[y].quantidade--;
+                contb++;
+            }else{
+                printf("Nao temos o filme em estoque.\n");
+                menualuguel();
+                }
+            }
+        }
+    printf("Digite a data de aluguel:");
+    fgets(listaa[x].dataaluguel,12,stdin);
+    printf("Digite a data da devolucao:");
+    fgets(listaa[x].datadevolucao,12,stdin);
+    printf("Filme alugado com sucesso.\n");
+    menualuguel();
+}
+void listaralucliente(){
+
+
+}
 void posicaoestoque(){
         printf("\nInsira o ID do filme: ");
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
@@ -550,8 +636,8 @@ printf("Menu de Clientes\n");
 }
 
 void menuestoque(){ // menu de estoque
-printf("\nLocadora de Filmes strcpy(Nota,Dez)\n");
-printf("Menu de Estoque\n");
+    printf("\nLocadora de Filmes strcpy(Nota,Dez)\n");
+    printf("Menu de Estoque\n");
     printf("\t[1] Cadastrar\n");
     printf("\t[2] Editar\n");
     printf("\t[3] Listar\n");
@@ -594,13 +680,56 @@ printf("Menu de Estoque\n");
     }
 }
 
+void menualuguel(){
+    printf("Locadora de Filmes strcpy(Nota,Dez)\n");
+    printf("Menu de Alugueis\n");
+    printf("\t[1] Alugar\n");
+    printf("\t[2] Alugar por Cliente\n");
+    printf("\t[3] Listar Alugueis\n");
+    printf("\t[4] Listat Alugueis de Clientes\n");
+    printf("\t[5] Visualizar Aluguel\n");
+    printf("\t[6] Visualizar Aluguel por Cliente\n");
+    printf("\t[7] Voltar\n");
+    printf("Operacao: ");
+    scanf ("%d", &z);
+    switch(z){
+    case 1:
+        alugar();
+        break;
+    case 2:
+        alugarcliente();
+        break;
+    case 3:
+        listaraluguel();
+        break;
+    case 4:
+        listaralucliente();
+        break;
+    case 5:
+        visualizaraluguel();
+        break;
+    case 6:
+        visualizaraluguelcliente();
+        break;
+    case 7:
+        menu();
+        break;
+    default:
+        printf("\nComando invalido, tente novamente!\n\n");
+        setbuf(stdin,NULL);;
+        menu1();
+        break;
+    }
+}
+
 void menu(){// menu principal que chama os submenus de filmes e clientes
     printf("Locadora de Filmes strcpy(Nota,Dez)\n");
     printf("\t[1] Filmes\n");
     printf("\t[2] Clientes\n");
     printf("\t[3] Estoque\n");
-    printf("\t[4] Instrucoes\n");
-    printf("\t[5] Sair\n");
+    printf("\t[4] Alugueis\n");
+    printf("\t[5] Instrucoes\n");
+    printf("\t[6] Sair\n");
     printf("Operacao: ");
     scanf ("%d", &z);
     switch(z){
@@ -614,9 +743,12 @@ void menu(){// menu principal que chama os submenus de filmes e clientes
         menuestoque();
         break;
     case 4:
-        instrucao();
+        menualuguel();
         break;
     case 5:
+        instrucao();
+        break;
+    case 6:
         system("exit");
         printf("\nFinalizando...\n\n");
         break;
@@ -630,7 +762,6 @@ void menu(){// menu principal que chama os submenus de filmes e clientes
 
 
 int main(){//função principal
-  setlocale(LC_ALL, "Portuguese");//comando q coloca os caracteres do idioma portugues no programa
 	menu();
 	return 0;
 }
