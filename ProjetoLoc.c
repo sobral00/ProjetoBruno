@@ -23,7 +23,7 @@ typedef struct estoque{ //struct que diz os atributos do estoque.
     char titulof[50];
 }Testoque;
 
-typedef struct aluguel{
+typedef struct aluguel{ //struct com os atributos dos alugueis
     int ida;
     char dataaluguel[12];
     char datadevolucao[12];
