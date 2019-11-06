@@ -25,6 +25,8 @@ typedef struct estoque{ //struct que diz os atributos do estoque.
 
 typedef struct aluguel{ //struct com os atributos dos alugueis
     int ida;
+    char nomecliente[30];
+    char titulocliente[50];
     char dataaluguel[12];
     char datadevolucao[12];
 }Taluguel;
@@ -66,7 +68,7 @@ void aluguelcliente(){
         if(vf == 'n'){
             posicaoaluguel();
         }else if(vf == 's'){
-
+            strcpy(listaacliente[x].nomecliente,listac[x].nome);
         }else{
     printf("Digite s ou n\n");
     aluguelcliente();
@@ -74,10 +76,12 @@ void aluguelcliente(){
      printf("\nInsira o Titulo do filme: ");
     setbuf(stdin,NULL);
     fgets(busca,50,stdin);
+    strcpy(listaacliente[x].titulocliente,listae[x].titulof);
     for(y=0;y<=50;y++){
         if(strcmp(busca, listae[y].titulof) == 0){
             if(listae[y].quantidade>0){
                 listae[y].quantidade--;
+                strcpy(listaacliente[x].titulocliente,listae[y].titulof);
                 conta++;
             }else{
                 printf("Nao temos o filme em estoque.\n");
@@ -86,9 +90,9 @@ void aluguelcliente(){
             }
         }
     printf("Digite a data de aluguel:");
-    fgets(listaa[x].dataaluguel,12,stdin);
+    fgets(listaacliente[x].dataaluguel,12,stdin);
     printf("Digite a data da devolucao:");
-    fgets(listaa[x].datadevolucao,12,stdin);
+    fgets(listaacliente[x].datadevolucao,12,stdin);
     printf("Filme alugado com sucesso.\n");
     menualuguel();
 }
@@ -124,8 +128,19 @@ void aluguel(){
     menualuguel();
 }
 void listaralucliente(){
-
-
+    for(x=0;x<conta;x++){
+        if(listaacliente[x].nomecliente!='\0'){
+            printf("Cliente: %s",listaacliente[x].nomecliente);
+            setbuf(stdin,NULL);
+            printf("Titulo: %s",listaacliente[x].titulocliente);
+            setbuf(stdin,NULL);
+            printf("Data do Aluguel: %s",listaacliente[x].dataaluguel);
+            setbuf(stdin,NULL);
+            printf("Data da Devolucao: %s\n",listaacliente[x].datadevolucao);
+            setbuf(stdin,NULL);
+        }
+    }
+    menualuguel();
 }
 void posicaoestoque(){
         printf("\nInsira o ID do filme: ");
@@ -692,24 +707,25 @@ void menualuguel(){
     printf("\t[7] Voltar\n");
     printf("Operacao: ");
     scanf ("%d", &z);
+    setbuf(stdin,NULL);
     switch(z){
     case 1:
-        alugar();
+        aluguel();
         break;
     case 2:
-        alugarcliente();
+        aluguelcliente();
         break;
     case 3:
-        listaraluguel();
+        //listaraluguel();
         break;
     case 4:
         listaralucliente();
         break;
     case 5:
-        visualizaraluguel();
+        //visualizaraluguel();
         break;
     case 6:
-        visualizaraluguelcliente();
+       // visualizaraluguelcliente();
         break;
     case 7:
         menu();
