@@ -701,7 +701,7 @@ void menualuguel(){
     printf("\t[1] Alugar\n");
     printf("\t[2] Alugar por Cliente\n");
     printf("\t[3] Listar Alugueis\n");
-    printf("\t[4] Listat Alugueis de Clientes\n");
+    printf("\t[4] Listar Alugueis de Clientes\n");
     printf("\t[5] Visualizar Aluguel\n");
     printf("\t[6] Visualizar Aluguel por Cliente\n");
     printf("\t[7] Voltar\n");
