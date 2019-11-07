@@ -54,9 +54,9 @@ void posicaoaluguel(){
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
-        if(x==0 || x<0|| x<conta){
-           printf("ID inadequado!\n");
-           posicaoaluguel();
+        if(x==0 || x<0|| x<conta || x>conty){
+           printf("ID inadequado!\n\n");
+           menualuguel();
             }
         x-=1;
 }
@@ -66,17 +66,22 @@ void aluguelcliente(){
         printf("Esta correto? (s / n)\n");
         scanf("%c", &vf);
         if(vf == 'n'){
-            posicaoaluguel();
+            menualuguel();
         }else if(vf == 's'){
             strcpy(listaacliente[x].nomecliente,listac[x].nome);
         }else{
     printf("Digite s ou n\n");
     aluguelcliente();
     }
-     printf("\nInsira o Titulo do filme: ");
+    printf("\nInsira o Titulo do filme: ");
     setbuf(stdin,NULL);
     fgets(busca,50,stdin);
+    if(strcmp(busca,listae[x].titulof)==0){
     strcpy(listaacliente[x].titulocliente,listae[x].titulof);
+    }else{
+        printf("Nao temos o filme em estoque.\n\n");
+                menualuguel();
+    }
     for(y=0;y<=50;y++){
         if(strcmp(busca, listae[y].titulof) == 0){
             if(listae[y].quantidade>0){
@@ -84,17 +89,19 @@ void aluguelcliente(){
                 strcpy(listaacliente[x].titulocliente,listae[y].titulof);
                 conta++;
             }else{
-                printf("Nao temos o filme em estoque.\n");
+                printf("Nao temos o filme em estoque.\n\n");
                 menualuguel();
                 }
             }
         }
+
     printf("Digite a data de aluguel:");
     fgets(listaacliente[x].dataaluguel,12,stdin);
     printf("Digite a data da devolucao:");
     fgets(listaacliente[x].datadevolucao,12,stdin);
     printf("Filme alugado com sucesso.\n");
     menualuguel();
+
 }
 void aluguel(){
     printf("\nInsira o ID do Aluguel: ");
@@ -106,14 +113,22 @@ void aluguel(){
            aluguel();
             }
         x-=1;
-    printf("\nInsira o Titulo do filme: ");
+    listaa[x].ida = x+1;
+    printf("Insira o Titulo do filme: ");
     setbuf(stdin,NULL);
     fgets(busca,50,stdin);
+    if(strcmp(busca,listae[x].titulof)==0){
+    strcpy(listaa[x].titulocliente,listae[x].titulof);
+    }else{
+        printf("Nao temos o filme em estoque.\n\n");
+                menualuguel();
+    }
     for(y=0;y<=50;y++){
         if(strcmp(busca, listae[y].titulof) == 0){
             if(listae[y].quantidade>0){
                 listae[y].quantidade--;
                 contb++;
+                strcpy(listaa[x].titulocliente,busca);
             }else{
                 printf("Nao temos o filme em estoque.\n");
                 menualuguel();
@@ -137,6 +152,21 @@ void listaralucliente(){
             printf("Data do Aluguel: %s",listaacliente[x].dataaluguel);
             setbuf(stdin,NULL);
             printf("Data da Devolucao: %s\n",listaacliente[x].datadevolucao);
+            setbuf(stdin,NULL);
+        }
+    }
+    menualuguel();
+}
+void listaraluguel(){
+    for(x=0;x<contb;x++){
+        if(listaa[x].nomecliente!='\0'){
+            printf("ID do Aluguel: %d\n",listaa[x].ida);
+            setbuf(stdin,NULL);
+            printf("Titulo: %s",listaa[x].titulocliente);
+            setbuf(stdin,NULL);
+            printf("Data do Aluguel: %s",listaa[x].dataaluguel);
+            setbuf(stdin,NULL);
+            printf("Data da Devolucao: %s\n",listaa[x].datadevolucao);
             setbuf(stdin,NULL);
         }
     }
@@ -716,7 +746,7 @@ void menualuguel(){
         aluguelcliente();
         break;
     case 3:
-        //listaraluguel();
+        listaraluguel();
         break;
     case 4:
         listaralucliente();
