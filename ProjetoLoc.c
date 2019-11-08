@@ -25,6 +25,7 @@ typedef struct estoque{ //struct que diz os atributos do estoque.
 
 typedef struct aluguel{ //struct com os atributos dos alugueis
     int ida;
+    int idac;
     char nomecliente[30];
     char titulocliente[50];
     char dataaluguel[12];
@@ -38,7 +39,6 @@ Tcliente listac[50];//a variavel com vetor da lista dos clientes
 Testoque listae[50];// a variavel com o vetor da lista do estoque
 char busca[50],c[]={0}, vf; //um variavel criada para localizar os filmes e clientes pelo nome  com o comando strcmp, variavel para pegar um valor caractere para depois transforma-lo em int.
 int z=0,x,y=0,cont=0,conty=0,conte=0,conta=0, contb=0;//variaveis de seleção de menu, de comandos de repetição e de contadores de filmes e clientes(cont para filmes e conty para clientes)
-
 
 void instrucao(){// função de instruções para um bom uso do programa
     printf("\n--------INSTRUCOES--------\n");
@@ -54,7 +54,7 @@ void posicaoaluguel(){
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
-        if(x==0 || x<0|| x<conta){
+        if(x==0 || x<0){
            printf("ID inadequado!\n\n");
            menualuguel();
             }
@@ -62,13 +62,19 @@ void posicaoaluguel(){
 }
 void aluguelcliente(){
     posicaoaluguel();
+    y=x;
      printf("Cliente: %s", listac[x].nome);
         printf("Esta correto? (s / n)\n");
         scanf("%c", &vf);
         if(vf == 'n'){
             menualuguel();
         }else if(vf == 's'){
-            strcpy(listaacliente[x].nomecliente,listac[x].nome);
+            if(strcmp(listaacliente[x].nomecliente,listac[x].nome)!=0){
+                strcpy(listaacliente[x].nomecliente,listac[x].nome);
+            }else{
+                x++;
+                strcpy(listaacliente[x].nomecliente,listac[y].nome);
+            }
         }else{
     printf("Digite s ou n\n");
     aluguelcliente();
@@ -76,9 +82,10 @@ void aluguelcliente(){
     printf("\nInsira o Titulo do filme: ");
     setbuf(stdin,NULL);
     fgets(busca,50,stdin);
+
     for(y=0;y<=50;y++){
         if(strcmp(busca, listae[y].titulof) == 0){
-        strcpy(listaacliente[x].titulocliente,listae[x].titulof);
+        strcpy(listaacliente[x].titulocliente,listae[y].titulof);
             if(listae[y].quantidade>0){
                 listae[y].quantidade--;
                 strcpy(listaacliente[x].titulocliente,listae[y].titulof);
@@ -134,9 +141,9 @@ void aluguel(){
     menualuguel();
 }
 void listaralucliente(){
-    for(x=0;x<conta;x++){]
+    for(x=0;x<conta;x++){
 
-        if(listaacliente[x].nomecliente!='\0'){
+        if(listaacliente[x].nomecliente!= '\0'){
             printf("Cliente: %s",listaacliente[x].nomecliente);
             setbuf(stdin,NULL);
             printf("Titulo: %s",listaacliente[x].titulocliente);
@@ -844,4 +851,3 @@ int main(){//função principal
 	menu();
 	return 0;
 }
-//
