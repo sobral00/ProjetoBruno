@@ -46,7 +46,7 @@ void instrucao(){// função de instruções para um bom uso do programa
     printf("Para saber a posicao atual do id liste os filmes ou clientes.\n");
     printf("Use apenas os numeros listados nos menus para escolher o passo a seguir no menu.\n");
     printf("Ao excluir um filme use a funcao do editar atualizar para colocar outro no lugar.\n\n");
-    menu();// chama o menu principal quando terminar a função
+    menuprincipal();// chama o menu principal quando terminar a função
 }
 
 void posicaoaluguel(){
@@ -273,7 +273,7 @@ void excluirestoque(){
         x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
         if(x==0 || x<0 || x<cont){
            printf("ID inadequado!\n");
-           menu1();
+           menuprincipal();
             }
         x-=1;
     listae[x].idf = x+1;
@@ -343,19 +343,19 @@ void consultaestoque(){//
     menuestoque();
 }
 
-void posicao(){ // função que tanto diz a posição do vetor quanto seleciona o ID do filme, lembrando que tem q começar por 1 q ele bota o vetor para 0
+void posicaofilme(){ // função que tanto diz a posição do vetor quanto seleciona o ID do filme, lembrando que tem q começar por 1 q ele bota o vetor para 0
         printf("\nInsira o ID do filme: ");
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
         if(x==0 || x<0 || x<=cont){
            printf("ID inadequado ou em uso!\n");
-           menu1();
+           menufilme();
             }
         x-=1; //aqui ele tira 1 do ID selecionado para por a posição correta no vetor
 }
-void cadastro(){
-	posicao();//chama a função posição
+void cadastrofilme(){
+	posicaofilme();//chama a função posição
 	 // caso o x seja menor q o contador no momento ele vai entender que essa ID esta em uso e nao vai permitir o cadastro
 	listaf[x].id = x+1; //devolve o 1 tirado para determinar a posição no vetor para o ID
 	listae[x].idf = listaf[x].id; //cadastra o id do filme tambem no estoque
@@ -371,9 +371,9 @@ void cadastro(){
 	fgets(listaf[x].genero,50,stdin);
 	setbuf(stdin,NULL);
 	cont++;// coloca mais um no contador de filmes
-    menu1();// chama a função menu dos filmes
+    menufilme();// chama a função menu dos filmes
 }
-void listar(){ // função que lista os filmes pela ordem do ID cadastrado
+void listarfilme(){ // função que lista os filmes pela ordem do ID cadastrado
     for(x=0;x<cont;x++){//enquanto o x for menor q o contador de filmes ele entende q tem um filme cadastrado e lista
         if(listaf[x].id!=0){//se o ID for 0 quer dizer q ouve um cadastro mais o filme foi excluido
             printf("Id: %d\n",listaf[x].id);
@@ -384,10 +384,10 @@ void listar(){ // função que lista os filmes pela ordem do ID cadastrado
                 printf("%s\n",listaf[x].titulo);//no caso de filme excluido ele solicitara q um novo filme seja inserido pelo atualizar
         }
     }
-    menu1();
+    menufilme();
 }
 
-void atualizar(){//função para atualizar tem a mesma função do cadastro mas nao aumenta um no contador
+void atualizarfilme(){//função para atualizar tem a mesma função do cadastro mas nao aumenta um no contador
 if(cont>=0){
 	 printf("\nInsira o ID do filme: ");
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
@@ -395,7 +395,7 @@ if(cont>=0){
         x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
         if(x==0 || x<0){
            printf("ID inadequado ou em uso!\n");
-           menu1();
+           menufilme();
             }
         x-=1;
 	listaf[x].id = x+1;
@@ -408,18 +408,18 @@ if(cont>=0){
 	strcpy(listae[x].titulof,listaf[x].titulo);
 	printf("Insira o genero do filme: ");
 	fgets(listaf[x].genero,50,stdin);
-    menu1();
+    menufilme();
     }
 }
 
-void excluir(){//função exclui um filme da lista
+void excluirfilme(){//função exclui um filme da lista
      printf("\nInsira o ID do filme: ");
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
         if(x==0 || x<0){
            printf("ID inadequado!\n");
-           menu1();
+           menufilme();
             }
         x-=1;
     listaf[x].id = x+1;
@@ -428,10 +428,10 @@ void excluir(){//função exclui um filme da lista
     strcpy(listae[x].titulof,listaf[x].titulo);
     strcpy(listaf[x].genero, "Vazio - Atualize o filme");
     setbuf(stdin,NULL);
-    menu1();
+    menufilme();
 }
 
-void editar(){//função de menu editar
+void editarfilme(){//função de menu editar
     printf("\nEditar\n");
     printf("\t[1] Atualizar\n");
     printf("\t[2] Excluir\n");
@@ -441,40 +441,40 @@ void editar(){//função de menu editar
 
     switch(z){//o swtitch permite escolher um caso de acordo com o input do usuario na variavel z neste caso
     case 1:
-        atualizar();
+        atualizarfilme();
         break;//encerra o caso
     case 2:
-        excluir();
+        excluirfilme();
         break;
     case 3:
-        menu1();
+        menufilme();
         break;
     default://caso o input não seja nenhum desses casos ele mostrara essa mensagem
         printf("\nComando invalido, tente novamente!\n\n");
         setbuf(stdin,NULL);
-        editar();
+        editarfilme();
         break;
     }
 }
 
-void visualizar(){// visualiza as informações do filme cadastrado apartir de sua posição de ID
+void visualizarfilme(){// visualiza as informações do filme cadastrado apartir de sua posição de ID
     printf("\nInsira o ID do filme: ");
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         x= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
         if(x==0 || x<0){
            printf("ID inadequado ou em uso!\n");
-           menu1();
+           menufilme();
             }
         x-=1;
     printf("Id: %d\n",listaf[x].id);
     printf("Ano: %d\n",listaf[x].ano);
     printf("Titulo: %s",listaf[x].titulo);
     printf("Genero: %s",listaf[x].genero);
-    menu1();
+    menufilme();
 }
 
-void consulta(){// visualiza as informações do filme cadastrado apartir de seu titulo
+void consultafilme(){// visualiza as informações do filme cadastrado apartir de seu titulo
     printf("\nInsira o Titulo do filme: ");
     setbuf(stdin,NULL);
     fgets(busca,50,stdin);
@@ -486,26 +486,26 @@ void consulta(){// visualiza as informações do filme cadastrado apartir de seu
     printf("Genero: %s",listaf[x].genero);
         }
     }
-    menu1();
+    menufilme();
 }
 
 /*
     apartir daqui todas as funções ou boa parte se repetem ,mas ,
     teremos os clientes como foco e nao mais os filmes.
 */
-void posicao1(){
+void posicaocliente(){
     printf("\nInsira o id do Cliente: ");
     scanf("%s*%d",&c);
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         y= strtol(c,NULL,10);
         if(y==0 || y<0 || y<=conty){
            printf("ID inadequado ou em uso!\n");
-           posicao1();
+           menucliente();
             }
     y-=1;
 }
-void cadastro1(){
-	posicao1();
+void cadastrocliente(){
+	posicaocliente();
 	listac[y].id = y+1;
 	printf("Insira o nome do cliente: ");
 	fgets(listac[y].nome,50,stdin);
@@ -517,9 +517,9 @@ void cadastro1(){
 	fgets(listac[y].email,50,stdin);
 	setbuf(stdin,NULL);
 	conty++;
-    menu2();
+    menucliente();
 }
-void listar1(){
+void listarcliente(){
     for(y=0;y<conty;y++){
         if(listac[y].id!=0){
             printf("ID: %d\n",listac[y].id);
@@ -532,10 +532,10 @@ void listar1(){
                 printf("%s\n",listac[y].nome);
         }
     }
-    menu2();
+    menucliente();
 }
 
-void atualizar1(){
+void atualizarcliente(){
     if(conty>=0){
 	printf("\nInsira o ID do cliente: ");
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
@@ -543,7 +543,7 @@ void atualizar1(){
         y= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
         if(y==0 || y<0 || conty<y){
            printf("ID inadequado ou nao cadastrado!\n");
-           menu2();
+           menucliente();
             }
         y-=1;
 	listac[y].id = y+1;
@@ -556,18 +556,18 @@ void atualizar1(){
 	printf("Insira o E-mail do cliente: ");
 	fgets(listac[y].email,50,stdin);
 	setbuf(stdin,NULL);
-	menu2();
+	menucliente();
     }
 }
 
-void excluir1(){
+void excluircliente(){
     printf("\nInsira o ID do cliente: ");
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         y= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
         if(y==0 || y<0 || y<conty){
            printf("ID inadequado ou em uso!\n");
-           menu2();
+           menucliente();
             }
         y-=1;
     listac[y].id = y+1;
@@ -575,10 +575,10 @@ void excluir1(){
     strcpy(listac[y].email, "Vazio\n");
     strcpy(listac[y].cpf, "Vazio\n");
     setbuf(stdin,NULL);
-    menu2();
+    menucliente();
 }
 
-void editar1(){
+void editarcliente(){
     printf("\nEditar\n");
     printf("\t[1] Atualizar\n");
     printf("\t[2] Excluir\n");
@@ -588,29 +588,29 @@ void editar1(){
 
     switch(z){
     case 1:
-        atualizar1();
+        atualizarcliente();
         break;
     case 2:
-        excluir1();
+        excluircliente();
         break;
     case 3:
-        menu2();
+        menucliente();
         break;
     default:
         printf("\nComando invalido, tente novamente!\n\n");
-        editar1();
+        editarcliente();
         break;
     }
 }
 
-void visualizar1(){
+void visualizarcliente(){
     printf("\nInsira o ID do cliente: ");
         scanf("%s*%d",&c);//scaneamos a string c mas alocamos seu endereço num tipo inteiro com um ponteiro
         setbuf(stdin,NULL);// todo setbuf desse é pra limpar o buffer
         y= strtol(c,NULL,10); // x recebe o valor inserido no tipo char c e entao usa o strtol para converte-lo em long int.
         if(y==0 || y<0){
            printf("ID inadequado ou em uso!\n");
-           menu2();
+           menucliente();
             }
         y-=1;
     printf("ID: %d\n",listac[y].id);
@@ -619,10 +619,10 @@ void visualizar1(){
     fflush(stdout);
     printf("E-mail: %s",listac[y].email);
     fflush(stdout);
-    menu2();
+    menucliente();
 }
 
-void consulta1(){
+void consultacliente(){
     printf("\nInsira o nome do cliente: ");
     fflush(stdout);
     setbuf(stdin,NULL);
@@ -635,10 +635,10 @@ void consulta1(){
     printf("E-mail: %s",listac[y].email);
         }
     }
-    menu2();
+    menucliente();
 }
 
-void menu1(){ // menu de filmes
+void menufilme(){ // menu de filmes
 printf("\nLocadora de Filmes strcpy(Nota,Dez)\n");
 printf("Menu de Filmes\n");
     printf("\t[1] Cadastrar\n");
@@ -653,37 +653,37 @@ printf("Menu de Filmes\n");
     switch(z){
     case 1:
     	setbuf(stdin,NULL);
-        cadastro();
+        cadastrofilme();
         break;
     case 2:
     	setbuf(stdin,NULL);
-        editar();
+        editarfilme();
         break;
     case 3:
     	setbuf(stdin,NULL);
-        listar();
+        listarfilme();
         break;
     case 4:
     	setbuf(stdin,NULL);
-        visualizar();
+        visualizarfilme();
         break;
     case 5:
     	setbuf(stdin,NULL);
-        consulta();
+        consultafilme();
         break;
     case 6:
     	setbuf(stdin,NULL);
-        menu();
+        menuprincipal();
         break;
     default:
         printf("\nComando invalido, tente novamente!\n\n");
         setbuf(stdin,NULL);;
-        menu1();
+        menufilme();
         break;
     }
 }
 
-void menu2(){
+void menucliente(){
 printf("\nLocadora de Filmes strcpy(Nota,Dez)\n");
 printf("Menu de Clientes\n");
     printf("\t[1] Cadastrar\n");
@@ -696,27 +696,27 @@ printf("Menu de Clientes\n");
     scanf ("%d", &z);
     switch(z){
     case 1:
-        cadastro1();
+        cadastrocliente();
         break;
     case 2:
-        editar1();
+        editarcliente();
         break;
     case 3:
-        listar1();
+        listarcliente();
         break;
     case 4:
-        visualizar1();
+        visualizarcliente();
         break;
     case 5:
-        consulta1();
+        consultacliente();
         break;
     case 6:
-        menu();
+        menuprincipal();
         break;
     default:
         printf("\nComando invalido, tente novamente!\n\n");
         setbuf(stdin,NULL);
-        menu2();
+        menucliente();
         break;
     }
 }
@@ -756,12 +756,12 @@ void menuestoque(){ // menu de estoque
         break;
     case 6:
     	setbuf(stdin,NULL);
-        menu();
+        menuprincipal();
         break;
     default:
         printf("\nComando invalido, tente novamente!\n\n");
         setbuf(stdin,NULL);;
-        menu1();
+        menufilme();
         break;
     }
 }
@@ -799,17 +799,17 @@ void menualuguel(){
         visualizaraluguelcliente();
         break;
     case 7:
-        menu();
+        menuprincipal();
         break;
     default:
         printf("\nComando invalido, tente novamente!\n\n");
         setbuf(stdin,NULL);;
-        menu1();
+        menufilme();
         break;
     }
 }
 
-void menu(){// menu principal que chama os submenus de filmes e clientes
+void menuprincipal(){// menu principal que chama os submenus de filmes e clientes
     printf("Locadora de Filmes strcpy(Nota,Dez)\n");
     printf("\t[1] Filmes\n");
     printf("\t[2] Clientes\n");
@@ -821,10 +821,10 @@ void menu(){// menu principal que chama os submenus de filmes e clientes
     scanf ("%d", &z);
     switch(z){
     case 1:
-        menu1();
+        menufilme();
         break;
     case 2:
-        menu2();
+        menucliente();
         break;
     case 3:
         menuestoque();
@@ -836,19 +836,20 @@ void menu(){// menu principal que chama os submenus de filmes e clientes
         instrucao();
         break;
     case 6:
-        system("exit");
         printf("\nFinalizando...\n\n");
+        exit(0);
         break;
     default:
         printf("\nComando invalido, tente novamente!\n\n");
         setbuf(stdin,NULL);
-        menu();
+        menuprincipal();
         break;
     }
 }
 
 
 int main(){//função principal
-	menu();
+	menuprincipal();
 	return 0;
 }
+
