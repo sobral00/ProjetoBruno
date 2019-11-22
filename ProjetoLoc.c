@@ -364,6 +364,7 @@ void cadastro(){
 	setbuf(stdin,NULL);
 	printf("Insira o nome do filme: ");
 	fgets(listaf[x].titulo,50,stdin);
+	setbuf(stdin,NULL);
 	strcpy(listae[x].titulof,listaf[x].titulo); //cadastra o titulo do filme no id correto no estoque
 	setbuf(stdin,NULL);
 	printf("Insira o genero do filme: ");
